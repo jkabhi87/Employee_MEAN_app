@@ -1,0 +1,37 @@
+<div *ngIf="employee" class="row">
+  <div class="col-md-12">
+    <h2 *ngIf="employee._id">Employee Details</h2>
+    <h2 *ngIf="!employee._id">New Employee</h2>
+  </div>
+</div>
+<div *ngIf="employee" class="row">
+  <form class="col-md-12">
+    <div class="form-group">
+      <label for="employee-firstname">First Name</label>
+      <input class="form-control" name="employee-firstName" [(ngModel)]="employee.firstName" placeholder="FirstName"/>
+    </div>
+    <div class="form-group">
+      <label for="employee-lastname">Last Name</label>
+      <input class="form-control" name="employee-lastName" [(ngModel)]="employee.lastName" placeholder="LastName"/>
+    </div>
+    <div class="form-group">
+      <label for="employee-hiredate">Hire Date</label>
+      <input class="form-control" name="employee-hireDate" [(ngModel)]="employee.hireDate" placeholder="yyyy-mm-dd"/>
+    </div>
+    <div class="form-group">
+      <label for="employee-role">Role</label>
+      <input class="form-control" name="employee-role" [(ngModel)]="employee.role" placeholder="CEO or VP or MANAGER or LACKEY"/>
+    </div>
+    <div class="form-group">
+      <label for="employee-favjoke">Fav joke</label>
+      <input class="form-control" name="employee-favoriteJoke" [(ngModel)]="employee.favoriteJoke" placeholder=""/>
+    </div>
+    <div class="form-group">
+      <label for="employee-favquote">Fav Quote</label>
+      <input class="form-control" name="employee-favoriteQuote" [(ngModel)]="employee.favoriteQuote" placeholder=""/>
+    </div>
+    <button class="btn btn-primary" *ngIf="!employee._id" (click)="createEmployee(employee)">Create</button>
+    <button class="btn btn-info" *ngIf="employee._id" (click)="updateEmployee(employee)">Update</button>
+    <button class="btn btn-danger" *ngIf="employee._id" (click)="deleteEmployee(employee._id)">Delete</button>
+  </form>
+</div>
