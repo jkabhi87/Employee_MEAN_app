@@ -1,27 +1,15 @@
-# EmpApp
+# Employee_MEAN_app
+ MEAN stack app for employee records management
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.19.
+ To run the app in local host,
+ 1. Download Node, Angular and MongoDB in your system.
+ 2. Open terminal and run 'mongod' -- this will start the mongo database server on default port of 27017.
+ 3. Change directory to emp-app/backend and run "node server.js". This will start up the node app on port 3000
+ 3. Change directory to Employee_MEAN_app/backend and run "node server.js". This will start up the node app on port 3000
+ 4. cd to emp-app and run "ng serve". This will start up the angular app on port 4200
+ 5. Open http://localhost:4200 
 
-## Development server
+If the node and angular apps fail to start, please install the missing dependencies (if any).
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+ The node backend code is inside the backend directory.
+ The angular frontend code is in the src directory.
