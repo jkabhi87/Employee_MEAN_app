@@ -53,7 +53,9 @@ router.get('/:id', function(req, res) {
   //Lookup the id in the mongo collection. If found, send the object
   Employee.findOne({_id:req.params.id}, function(err, employee){
 		if(err)
-			res.send(err);
+      res.send(err);
+    if(employee === null)
+      return res.status(404).send("404 - Record not found"); //res.json("404 - Record not found");
 		res.json(employee);
 	});
 });
@@ -81,7 +83,7 @@ router.post('', async function(req, res) {
                       if(err){
                         res.send(err);
                       }
-                      res.json(employees);
+                      res.status(201).json(employees);
                     });
                   })
                   .catch(() => {
@@ -92,18 +94,14 @@ router.post('', async function(req, res) {
                       if(err){
                         res.send(err);
                       }
-                      res.json(employees);
+                      res.status(201).json(employees);
                     });
       });
 });
 
 /* PUT a new employee record */
 router.put('/:id', async function(req, res) {
-  //Before starting the update, check if all the fields are of valid types, formats and values
-  var validBody = await isValidBody(req.body);
-  if (!validBody) {
-    return res.status(400).send(POST_BODY_ERROR);
-}
+
   var query = {
 		firstName:req.body.firstName,
 		lastName:req.body.lastName,
@@ -112,6 +110,30 @@ router.put('/:id', async function(req, res) {
   	favoriteJoke: req.body.favoriteJoke,
   	favoriteQuote: req.body.favoriteQuote
   };
+  //Before starting the update, check if all the fields are of valid types, formats and values
+  var isCurrentRecordCeo  = await isCurrentRecordCEO(req.params.id);
+  var date_valid = await isValidHireDate(req.body.hireDate);
+  if( isCurrentRecordCeo ){
+    if (!req.body || !req.body.firstName || typeof req.body.firstName !== 'string'
+    || !req.body.lastName || typeof req.body.lastName !== 'string'
+    || !req.body.hireDate || typeof req.body.hireDate !== 'string'
+    || !req.body.role || typeof req.body.role !== 'string'
+    || !isValidRole(req.body.role)
+    || !date_valid)
+    {
+      return res.status(400).send("UPDATE failed.");
+    }
+    Employee.findOneAndUpdate({_id:req.params.id}, query, function(err, employee){
+      if(err)
+        res.send(err);
+      return res.json(query);
+    });
+  }
+  var validBody = await isValidBody(req.body);
+
+  if (!validBody) {
+    return res.status(400).send(POST_BODY_ERROR);
+}
   //update the record
 	Employee.findOneAndUpdate({_id:req.params.id}, query, function(err, employee){
 		if(err)
@@ -182,6 +204,17 @@ async function ceoExists() {
       return false;
     }
     return true;
+}
+
+async function isCurrentRecordCEO(id) {
+  var emps = await Employee.findOne({_id:id});
+    console.log("inside iscurrent recod function Employee list:");
+    console.log(emps);
+    //If the resultSet is not empty, then there are CEO records in the database
+		if(emps.role === "CEO"){
+      return true;
+    }
+    return false;
 }
 
 //This function checks if the hireDate is in YYYY-MM-DD format and that it isn't in future
